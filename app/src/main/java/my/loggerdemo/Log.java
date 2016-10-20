@@ -63,7 +63,7 @@ public final class Log<E> extends LinkedBlockingDeque<E> {
 
         while (it.hasNext()) {
             message = it.next();
-            sb.append(message.export()).append("\n");
+            sb.append(message.toString()).append("\n");
         }
 
         return sb.toString();
