@@ -9,7 +9,7 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public final class Log<E> extends LinkedBlockingDeque<E> {
 
-    private static final int LOGGER_CAPACITY = 500;
+    public static final int LOGGER_CAPACITY = 500;
 
     private static Log<Message> instance;
 
