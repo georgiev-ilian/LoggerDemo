@@ -68,8 +68,6 @@ import android.support.annotation.VisibleForTesting;
             Thread t = Thread.currentThread();
             StackTraceElement[] stack = t.getStackTrace();
 
-
-
             int k = callingMethodIndex;
             String str = stack[k].getClassName() + DELIMITER + stack[k].getMethodName()
                     + DELIMITER + stack[k].getFileName() + DELIMITER + stack[k].getLineNumber()
