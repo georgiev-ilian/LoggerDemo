@@ -2,6 +2,7 @@ package my.loggerdemo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,17 +24,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        /*log("Message #1    helllo |';;'' asd l|l");
-        log("Message #2");
-        log("Message #3 o;o helloppp|||");
-        log(null);
-        log("Message #4");*/
-
-        //android.util.Log.d("MainActivity", "onResume: hello");
-
-        LogToFile.getInstance(this).log("Message #1");
-        LogToFile.getInstance(this).log("Message #2");
-        LogToFile.getInstance(this).log("Message #3");
+        Logger logger = null;
+        try {
+            logger = new LogToFile(this);
+            logger.log(new Message("Message #1"));
+            logger.log(new Message("Message #1"));
+            logger.log(new Message("Message #1"));
+        } catch (LoggerException e) {
+            Log.d("MainActivity", "Cannot create logger and log messages", e);
+        }
 
         /*Iterator<Message> it = Log.getInstance().iterator();
         Message message;
@@ -43,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
             android.util.Log.d("MainActivity", "onResume: " + message.toString());
         }*/
 
-
-
 /*
         for (int i = 0; i < 100000; i++) {
             //Log.a("Hello I'm a logger message to be logged");
@@ -52,14 +49,20 @@ public class MainActivity extends AppCompatActivity {
         }
 */
 
-
-
         /*for (int i = 0; i < 100000000; i++) {
             CONSTANT_ARRAY[i] = "Hello my constant";
         }*/
 
-        android.util.Log.d("MainActivity", "onResume: #1");
-        android.util.Log.d("MainActivity", "onResume: " + LogToFile.getInstance(this).export());
-        android.util.Log.d("MainActivity", "onResume: #2");
+        if (logger != null) {
+            android.util.Log.d("MainActivity", "onResume: #1");
+
+            try {
+                Log.d("MainActivity", "onResume: " + logger.export());
+            } catch (LoggerException e) {
+                Log.d("MainActivity", "Cannot export from logger", e);
+            }
+
+            android.util.Log.d("MainActivity", "onResume: #2");
+        }
     }
 }
