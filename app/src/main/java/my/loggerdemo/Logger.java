@@ -20,4 +20,9 @@ public interface Logger {
      * Wipe all collected messages in the logger
      */
     void clear() throws LoggerException;
+
+    /**
+     * @return Returns the number of logged messages
+     */
+    int size();
 }
