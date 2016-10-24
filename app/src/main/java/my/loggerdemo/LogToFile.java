@@ -21,7 +21,7 @@ public final class LogToFile implements Logger {
 
     private int length = 0;
 
-    private LogToFile(Context context) throws LoggerException {
+    public LogToFile(Context context) throws LoggerException {
         this.context = context;
         logName = String.valueOf(System.currentTimeMillis());
         try {
