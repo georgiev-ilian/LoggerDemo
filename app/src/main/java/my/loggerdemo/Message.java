@@ -11,7 +11,7 @@ import android.support.annotation.VisibleForTesting;
 
     public static final String DELIMITER = ";";
 
-    private static final int DEFAULT_CALLING_METHOD_INDEX = 5;
+    private static final int DEFAULT_CALLING_METHOD_INDEX = 7;
 
     private long currentTime;
     private final Identifier identifier;
