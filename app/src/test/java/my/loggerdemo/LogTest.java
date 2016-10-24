@@ -12,17 +12,17 @@ public class LogTest {
 
     @Test
     public void testLog_capacity() {
-        LogMemory<Message> log = LogMemory.getInstance();
+        LogMemory logger = new LogMemory();
 
-        LogMemory.log("Hello I'm a logger message to be logged #1");
-        LogMemory.log("Hello I'm a logger message to be logged #2");
+        logger.log(new Message("Hello I'm a logger message to be logged #1"));
+        logger.log(new Message("Hello I'm a logger message to be logged #2"));
 
-        assertEquals(2, log.size());
+        assertEquals(2, logger.size());
 
         for (int i = 0; i < 100000; i++) {
-            LogMemory.log("Hello I'm a logger message to be logged");
+            logger.log(new Message("Hello I'm a logger message to be logged"));
         }
 
-        assertEquals(LogMemory.LOGGER_CAPACITY, log.size());
+        assertEquals(LogMemory.DEFAULT_MEMORY_CAPACITY, logger.size());
     }
 }
