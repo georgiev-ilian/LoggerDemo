@@ -7,13 +7,13 @@ import java.util.concurrent.LinkedBlockingDeque;
  * Constant capacity Deque. Use only {@link #offer} method for insertions.
  * Created by Ilian Georgiev.
  */
-public final class Log<E> extends LinkedBlockingDeque<E> {
+public final class LogMemory<E> extends LinkedBlockingDeque<E> {
 
     public static final int LOGGER_CAPACITY = 500;
 
-    private static Log<Message> instance;
+    private static LogMemory<Message> instance;
 
-    private Log(int capacity) {
+    private LogMemory(int capacity) {
         super(capacity);
     }
 
@@ -33,9 +33,9 @@ public final class Log<E> extends LinkedBlockingDeque<E> {
         return result;
     }
 
-    public static Log<Message> getInstance() {
+    public static LogMemory<Message> getInstance() {
         if (instance == null) {
-            instance = new Log<>(LOGGER_CAPACITY);
+            instance = new LogMemory<>(LOGGER_CAPACITY);
         }
 
         return instance;
@@ -50,7 +50,7 @@ public final class Log<E> extends LinkedBlockingDeque<E> {
      */
     public static void log(String message) {
         Message loggerMessage = new Message(message);
-        Log.getInstance().offer(loggerMessage);
+        LogMemory.getInstance().offer(loggerMessage);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class Log<E> extends LinkedBlockingDeque<E> {
      */
     public static String export() {
         StringBuilder sb = new StringBuilder();
-        Iterator<Message> it = Log.getInstance().iterator();
+        Iterator<Message> it = LogMemory.getInstance().iterator();
         Message message;
 
         while (it.hasNext()) {

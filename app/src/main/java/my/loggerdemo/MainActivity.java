@@ -3,8 +3,6 @@ package my.loggerdemo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import static my.loggerdemo.Log.log;
-
 public class MainActivity extends AppCompatActivity {
 
     //private static LoggerDeque<LoggerMessage> loggerDeque = new LoggerDeque<>(1000);
@@ -25,11 +23,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        log("Message #1    helllo |';;'' asd l|l");
+        /*log("Message #1    helllo |';;'' asd l|l");
         log("Message #2");
         log("Message #3 o;o helloppp|||");
         log(null);
-        log("Message #4");
+        log("Message #4");*/
+
+        //android.util.Log.d("MainActivity", "onResume: hello");
+
+        LogToFile.getInstance(this).log("Message #1");
+        LogToFile.getInstance(this).log("Message #2");
+        LogToFile.getInstance(this).log("Message #3");
 
         /*Iterator<Message> it = Log.getInstance().iterator();
         Message message;
@@ -40,17 +44,22 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
 
+
 /*
         for (int i = 0; i < 100000; i++) {
-            Log.a("Hello I'm a logger message to be logged");
+            //Log.a("Hello I'm a logger message to be logged");
+            LogToFile.getInstance(this).log("Message #1");
         }
 */
+
 
 
         /*for (int i = 0; i < 100000000; i++) {
             CONSTANT_ARRAY[i] = "Hello my constant";
         }*/
 
-        android.util.Log.d("MainActivity", "onResume: " + Log.export());
+        android.util.Log.d("MainActivity", "onResume: #1");
+        android.util.Log.d("MainActivity", "onResume: " + LogToFile.getInstance(this).export());
+        android.util.Log.d("MainActivity", "onResume: #2");
     }
 }
