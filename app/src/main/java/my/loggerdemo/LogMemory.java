@@ -1,5 +1,7 @@
 package my.loggerdemo;
 
+import android.support.annotation.NonNull;
+
 import java.util.Iterator;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -7,24 +9,26 @@ import java.util.concurrent.LinkedBlockingDeque;
  * Constant capacity Deque. Use only {@link #offer} method for insertions.
  * Created by Ilian Georgiev.
  */
-public final class LogMemory<E> extends LinkedBlockingDeque<E> {
+public final class LogMemory extends LinkedBlockingDeque<Message> implements Logger {
 
-    public static final int LOGGER_CAPACITY = 500;
+    public static final int DEFAULT_MEMORY_CAPACITY = 500;
 
-    private static LogMemory<Message> instance;
+    public LogMemory() {
+        this(DEFAULT_MEMORY_CAPACITY);
+    }
 
-    private LogMemory(int capacity) {
+    public LogMemory(int capacity) {
         super(capacity);
     }
 
     @Override
-    public boolean offer(E e) {
-        boolean result = super.offer(e);
+    public boolean offer(@NonNull Message message) {
+        boolean result = super.offer(message);
 
         try {
             if (!result) {
                 take();
-                result = super.offer(e);
+                result = super.offer(message);
             }
         } catch (InterruptedException ex) {
             return false;
@@ -33,32 +37,15 @@ public final class LogMemory<E> extends LinkedBlockingDeque<E> {
         return result;
     }
 
-    public static LogMemory<Message> getInstance() {
-        if (instance == null) {
-            instance = new LogMemory<>(LOGGER_CAPACITY);
-        }
-
-        return instance;
+    @Override
+    public void log(Message message) {
+        offer(message);
     }
 
-    /**
-     * Appends a message to the logger queue
-     * Note : Delimiter characters ; and | will be replaced by space.
-     * It is better to avoid using these characters in the message.
-     *
-     * @param message The message string to be logged
-     */
-    public static void log(String message) {
-        Message loggerMessage = new Message(message);
-        LogMemory.getInstance().offer(loggerMessage);
-    }
-
-    /**
-     * @return Returns collected logs as a string ready to be send to our server.
-     */
-    public static String export() {
+    @Override
+    public String export() {
         StringBuilder sb = new StringBuilder();
-        Iterator<Message> it = LogMemory.getInstance().iterator();
+        Iterator<Message> it = iterator();
         Message message;
 
         while (it.hasNext()) {

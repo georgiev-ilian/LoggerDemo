@@ -11,9 +11,7 @@ import java.io.OutputStream;
  * Created by Ilian Georgiev.
  */
 
-public class LogToFile {
-
-    private static LogToFile instance;
+public final class LogToFile implements Logger {
 
     private OutputStream stream;
 
@@ -21,34 +19,29 @@ public class LogToFile {
 
     private final Context context;
 
-    private LogToFile(Context context) {
+    private int length = 0;
+
+    private LogToFile(Context context) throws LoggerException {
         this.context = context;
         logName = String.valueOf(System.currentTimeMillis());
         try {
             stream = context.openFileOutput(logName, Context.MODE_PRIVATE);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new LoggerException("Cannot open file for logging messages");
         }
     }
 
-    public static LogToFile getInstance(Context context) {
-        if (instance == null) {
-            instance = new LogToFile(context);
-        }
-
-        return instance;
-    }
-
-    public void log(String message) {
-        Message loggerMessage = new Message(message);
+    @Override
+    public void log(Message message) throws LoggerException {
         try {
-            stream.write(loggerMessage.toString().getBytes());
+            stream.write(message.toString().getBytes());
+            length++;
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LoggerException("Cannot log message to a file");
         }
     }
 
-    public String export() {
+    public String export() throws LoggerException {
         InputStream inputStream = null;
         String result = null;
         try {
@@ -56,19 +49,19 @@ public class LogToFile {
 
             inputStream = context.openFileInput(logName);
             byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
-            result = new String(buffer);
-            /*if (inputStream.read(buffer) == -1) {
-                return new String(buffer);
-            }*/
+            int readResult = inputStream.read(buffer);
+
+            if (readResult > 0) {
+                result = new String(buffer);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new LoggerException("Failed to export logger. Cannot open and read the log file.");
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new LoggerException("Failed to export logger. Cannot close input stream");
                 }
             }
 
@@ -80,5 +73,11 @@ public class LogToFile {
 
     public void clear() {
         context.deleteFile(logName);
+        length = 0;
+    }
+
+    @Override
+    public int size() {
+        return length;
     }
 }
