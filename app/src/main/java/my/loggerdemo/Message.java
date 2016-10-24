@@ -5,6 +5,10 @@ import android.support.annotation.VisibleForTesting;
 /**
  * Message class keeps a single log message details. Immutable.
  *
+ * Note : Delimiter characters ; and | will be replaced by space.
+ * It is better to avoid using these characters in the message.
+ * These two characters are considered as delimiter for the export.
+ *
  * Created by Ilian Georgiev.
  */
 /* package */ class Message {
