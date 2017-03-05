@@ -14,6 +14,10 @@ import java.io.OutputStream;
 
 public final class LogToFile implements Logger {
 
+    private static final String DELIMITER = "|";
+
+    private static final String NEW_LINE = "\n";
+
     private OutputStream stream;
 
     private final String logName;
@@ -47,7 +51,9 @@ public final class LogToFile implements Logger {
     public void log(String tag, String message) {
         long currentTime = System.currentTimeMillis();
         long threadId = Thread.currentThread().getId();
-        String str = currentTime + "|" + threadId + "|" + tag + "|" + message + "\n";
+
+        String str = currentTime + DELIMITER + threadId + DELIMITER + tag + DELIMITER
+                + message + NEW_LINE;
 
         try {
             stream.write(str.getBytes());
