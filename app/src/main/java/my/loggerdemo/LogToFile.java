@@ -1,6 +1,7 @@
 package my.loggerdemo;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -37,7 +38,23 @@ public final class LogToFile implements Logger {
             stream.write(message.toString().getBytes());
             length++;
         } catch (IOException e) {
+            Log.d("LogToFile", "log: e=" + e);
             throw new LoggerException("Cannot log message to a file");
+        }
+    }
+
+    @Override
+    public void log(String tag, String message) {
+        long currentTime = System.currentTimeMillis();
+        long threadId = Thread.currentThread().getId();
+        String str = currentTime + "|" + threadId + "|" + tag + "|" + message + "\n";
+
+        try {
+            stream.write(str.getBytes());
+            length++;
+        } catch (IOException e) {
+            Log.d("LogToFile", "log: e=" + e);
+            //throw new LoggerException("Cannot log message to a file");
         }
     }
 

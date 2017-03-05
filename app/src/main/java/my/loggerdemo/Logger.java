@@ -11,6 +11,8 @@ public interface Logger {
      */
     void log(Message message) throws LoggerException;
 
+    void log(String tag, String message);
+
     /**
      * @return Returns collected logs as a string ready to be send.
      */

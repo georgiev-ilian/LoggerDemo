@@ -43,6 +43,11 @@ public final class LogMemory extends LinkedBlockingDeque<Message> implements Log
     }
 
     @Override
+    public void log(String tag, String message) {
+
+    }
+
+    @Override
     public String export() {
         StringBuilder sb = new StringBuilder();
         Iterator<Message> it = iterator();

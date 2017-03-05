@@ -47,8 +47,7 @@ import android.support.annotation.VisibleForTesting;
         sb.append("{ ").append("currentTime: ").append(currentTime).append(";");
         sb.append(" identifier: ").append(identifier.toString()).append(";");
         if (byteArr != null) {
-            sb.append(" message: ").append(new String(byteArr)).append(";");
-        }
+            sb.append(" message: ").append(new String(byteArr)).append(";"); }
         sb.append("}");
 
         return sb.toString();
